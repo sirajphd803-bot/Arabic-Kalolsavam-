@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Kalolsavam 2026-27 Registration</title>
+    <!-- jsPDF & html2canvas Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .title {
+            color: #0b57cf;
+            font-size: 18px;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: #1f2937;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .form-row > div {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            height: 44px;
+            padding: 0 12px;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #334155;
+            outline: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            height: 46px;
+            background-color: #0b57cf;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .btn-export {
+            background-color: #0b57cf;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn-clear-all {
+            background-color: #dc2626;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .filter-grid select {
+            height: 36px;
+            font-size: 12px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: left;
+            background: white;
+        }
+
+        th, td {
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            word-break: break-word;
+        }
+
+        th {
+            background-color: #0b57cf;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .pdf-title-preview {
+            font-size: 12px;
+            font-weight: 700;
+            color: #0b57cf;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #eff6ff;
+            border-left: 4px solid #0b57cf;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Registration Form Card -->
+        <div class="card">
+            <h1 class="title">Arabic Kalolsavam 2026-27<br>Entry Form (Category III)</h1>
+
+            <form id="registrationForm" onsubmit="saveParticipant(event)">
+                
+                <div class="form-group">
+                    <label>Student Name</label>
+                    <input type="text" id="studentName" placeholder="Enter full name" required>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <label>Class</label>
+                        <select id="classSelect" required>
+                            <option value="">Select</option>
+                            <option value="8">Class 8</option>
+                            <option value="9">Class 9</option>
+                            <option value="10">Class 10</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Division</label>
+                        <select id="divisionSelect" required>
+                            <option value="">Select</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>House / Group</label>
+                    <select id="houseSelect" required>
+                        <option value="">Select House</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Green">Green</option>
+                        <option value="Red">Red</option>
+                        <option value="Yellow">Yellow</option>
+                    </select>
+                </div>
+
+                <div class="section-title">Individual Events (Max 3 - Optional)</div>
+
+                <div class="form-group">
+                    <label>Event 1</label>
+                    <select id="indEvent1" class="ind-event">
+                        <option value="">Select Event 1</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <label>Event 2 (Optional)</label>
+                        <select id="indEvent2" class="ind-event">
+                            <option value="">Select Event 2</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Event 3 (Optional)</label>
+                        <select id="indEvent3" class="ind-event">
+                            <option value="">Select Event 3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title">Group Event (Max 1 - Optional)</div>
+
+                <div class="form-group">
+                    <label>Group Item</label>
+                    <select id="groupEvent">
+                        <option value="">Select Group Event</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit">Save Entry</button>
+            </form>
+        </div>
+
+        <!-- Participants List Card -->
+        <div class="card">
+            <div class="action-bar">
+                <button onclick="exportToPDF()" class="btn-export">Export PDF</button>
+                <button onclick="clearAllData()" class="btn-clear-all">Clear All Entries</button>
+            </div>
+            
+            <h2 class="section-title" style="margin-top:0; margin-bottom: 12px;">Registered Participants</h2>
+
+            <div class="filter-grid">
+                <div>
+                    <label>House</label>
+                    <select id="filterHouse" onchange="filterData()">
+                        <option value="">All Houses</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Green">Green</option>
+                        <option value="Red">Red</option>
+                        <option value="Yellow">Yellow</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Class</label>
+                    <select id="filterClass" onchange="filterData()">
+                        <option value="">All Classes</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Division</label>
+                    <select id="filterDivision" onchange="filterData()">
+                        <option value="">All Divisions</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Event</label>
+                    <select id="filterEvent" onchange="filterData()">
+                        <option value="">All Events</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="pdfHeaderTitle" class="pdf-title-preview">
+                Arabic Kalolsavam: Category III - All Houses - All Classes (All Events)
+            </div>
+
+            <div class="table-container">
+                <table id="participantTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 6%;">#</th>
+                            <th style="width: 25%;">Name</th>
+                            <th style="width: 14%;">Class</th>
+                            <th style="width: 15%;">House</th>
+                            <th style="width: 30%;">Events</th>
+                            <th style="width: 10%; text-align:center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="participantTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const individualEvents = [
+            "ഖുർ-ആൻ പാരായണം",
+            "ഉപന്യാസം - അറബിക്",
+            "കഥാരചന",
+            "അടിക്കുറിപ്പ് രചന",
+            "പരിഭാഷ (അറബിയിലേക്ക്)",
+            "പോസ്റ്റർ നിർമ്മാണം",
+            "പദ്യം ചൊല്ലൽ (ആൺ)",
+            "പദ്യം ചൊല്ലൽ (പെൺ)",
+            "അറബിഗാനം (ആൺ)",
+            "അറബിഗാനം (പെൺ)",
+            "കഥാപ്രസംഗം",
+            "മോണോ ആക്ട്",
+            "പ്രസംഗം",
+            "പ്രശ്നോത്തരി",
+            "മുശാഅറ (അക്ഷരശ്ലോകം)",
+            "നിഘണ്ടുനിർമ്മാണം"
+        ];
+
+        const groupEvents = [
+            "സംഭാഷണം (2 പേർ)",
+            "സംഘഗാനം (7 പേർ)",
+            "നാടകം (10 പേർ)"
+        ];
+
+        const ADMIN_PASSWORD = "1234";
+
+        let participants = JSON.parse(localStorage.getItem('arabicKalolsavamData')) || [];
+        let filteredParticipants = [];
+
+        window.onload = function() {
+            populateEventDropdowns();
+            filterData();
+        };
+
+        function populateEventDropdowns() {
+            const indSelects = document.querySelectorAll('.ind-event');
+            const groupSelect = document.getElementById('groupEvent');
+            const filterEventSelect = document.getElementById('filterEvent');
+
+            individualEvents.forEach(event => {
+                indSelects.forEach(select => {
+                    select.innerHTML += `<option value="${event}">${event}</option>`;
+                });
+                filterEventSelect.innerHTML += `<option value="${event}">${event}</option>`;
+            });
+
+            groupEvents.forEach(event => {
+                groupSelect.innerHTML += `<option value="${event}">${event}</option>`;
+                filterEventSelect.innerHTML += `<option value="${event}">${event}</option>`;
+            });
+        }
+
+        function saveParticipant(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('studentName').value.trim();
+            const studentClass = document.getElementById('classSelect').value;
+            const division = document.getElementById('divisionSelect').value;
+            const house = document.getElementById('houseSelect').value;
+            
+            const e1 = document.getElementById('indEvent1').value;
+            const e2 = document.getElementById('indEvent2').value;
+            const e3 = document.getElementById('indEvent3').value;
+            
+            const indSelected = [e1, e2, e3].filter(e => e !== "");
+            
+            if (new Set(indSelected).size !== indSelected.length) {
+                alert("ഒരേ വ്യക്തിഗത ഇനം ഒന്നിനേക്കാൾ കൂടുതൽ തവണ തിരഞ്ഞെടുക്കരുത്.");
+                return;
+            }
+
+            const groupSelected = document.getElementById('groupEvent').value;
+
+            const newEntry = {
+                id: Date.now(),
+                name,
+                class: studentClass,
+                division,
+                house,
+                indEvents: indSelected,
+                groupEvent: groupSelected
+            };
+
+            participants.push(newEntry);
+            localStorage.setItem('arabicKalolsavamData', JSON.stringify(participants));
+            
+            document.getElementById('registrationForm').reset();
+            filterData();
+            alert("Entry Saved Successfully!");
+        }
+
+        // Delete Single Entry with Password Prompt
+        function deleteParticipant(id) {
+            const password = prompt("ഡിലീറ്റ് ചെയ്യാൻ പാസ്‌വേഡ് എന്റർ ചെയ്യുക:");
+            
+            if (password === null) return; // User cancelled
+            
+            if (password === ADMIN_PASSWORD) {
+                participants = participants.filter(item => item.id !== id);
+                localStorage.setItem('arabicKalolsavamData', JSON.stringify(participants));
+                filterData();
+                alert("എൻട്രി വിജയകരമായി ഡിലീറ്റ് ചെയ്തു.");
+            } else {
+                alert("തെറ്റായ പാസ്‌വേഡ്! ഡിലീറ്റ് ചെയ്യാൻ സാധ്യമല്ല.");
+            }
+        }
+
+        // Clear All Data with Password Prompt
+        function clearAllData() {
+            const password = prompt("എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്യാൻ പാസ്‌വേഡ് എന്റർ ചെയ്യുക:");
+            
+            if (password === null) return; // User cancelled
+
+            if (password === ADMIN_PASSWORD) {
+                if (confirm("മുഴുവൻ ഡാറ്റയും മായ്ച്ചു കളയണം എന്ന് ഉറപ്പാണോ?")) {
+                    participants = [];
+                    localStorage.removeItem('arabicKalolsavamData');
+                    filterData();
+                    alert("എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്തു.");
+                }
+            } else {
+                alert("തെറ്റായ പാസ്‌വേഡ്! ഡാറ്റ ക്ലിയർ ചെയ്യാൻ സാധ്യമല്ല.");
+            }
+        }
+
+        function getFilterTitle() {
+            const houseVal = document.getElementById('filterHouse').value || "All Houses";
+            const classVal = document.getElementById('filterClass').value;
+            const divVal = document.getElementById('filterDivision').value;
+            const eventVal = document.getElementById('filterEvent').value || "All Events";
+
+            let classDivText = "All Classes";
+            if (classVal && divVal) classDivText = `${classVal}-${divVal}`;
+            else if (classVal) classDivText = `Class ${classVal}`;
+
+            return `Arabic Kalolsavam: Category III - ${houseVal} - ${classDivText} (${eventVal})`;
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('participantTableBody');
+            tbody.innerHTML = "";
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8; padding: 15px;">No Data Found</td></tr>`;
+                return;
+            }
+
+            data.forEach((item, index) => {
+                const allEvents = [...item.indEvents];
+                if(item.groupEvent) allEvents.push(item.groupEvent + " (G)");
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><b>${item.name}</b></td>
+                    <td>${item.class}-${item.division}</td>
+                    <td>${item.house}</td>
+                    <td>${allEvents.join(', ') || '-'}</td>
+                    <td style="text-align:center;">
+                        <button class="btn-delete" onclick="deleteParticipant(${item.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterData() {
+            const houseVal = document.getElementById('filterHouse').value;
+            const classVal = document.getElementById('filterClass').value;
+            const divVal = document.getElementById('filterDivision').value;
+            const eventVal = document.getElementById('filterEvent').value;
+
+            filteredParticipants = participants.filter(item => {
+                const matchesHouse = !houseVal || item.house === houseVal;
+                const matchesClass = !classVal || item.class === classVal;
+                const matchesDiv = !divVal || item.division === divVal;
+                const matchesEvent = !eventVal || item.indEvents.includes(eventVal) || item.groupEvent === eventVal;
+
+                return matchesHouse && matchesClass && matchesDiv && matchesEvent;
+            });
+
+            document.getElementById('pdfHeaderTitle').innerText = getFilterTitle();
+            renderTable(filteredParticipants);
+        }
+
+        // PDF Export Implementation
+        async function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            
+            const exportContainer = document.createElement('div');
+            exportContainer.style.position = 'absolute';
+            exportContainer.style.left = '-9999px';
+            exportContainer.style.top = '0';
+            exportContainer.style.width = '800px';
+            exportContainer.style.backgroundColor = '#ffffff';
+            exportContainer.style.padding = '20px';
+            exportContainer.style.boxSizing = 'border-box';
+
+            const titleElement = document.createElement('div');
+            titleElement.style.fontSize = '14px';
+            titleElement.style.fontWeight = 'bold';
+            titleElement.style.color = '#0b57cf';
+            titleElement.style.marginBottom = '15px';
+            titleElement.style.padding = '10px';
+            titleElement.style.background = '#eff6ff';
+            titleElement.style.borderLeft = '4px solid #0b57cf';
+          titleElement.innerText = getFilterTitle();
+            exportContainer.appendChild(titleElement);
+
+            const tableElement = document.createElement('table');
+            tableElement.style.width = '100%';
+            tableElement.style.borderCollapse = 'collapse';
+            tableElement.style.fontSize = '12px';
+            
+            let tableHTML = `
+                <thead>
+                    <tr style="background-color: #0b57cf; color: white;">
+                        <th style="width: 6%; padding: 8px; border: 1px solid #cbd5e1; text-align: left;">#</th>
+                        <th style="width: 24%; padding: 8px; border: 1px solid #cbd5e1; text-align: left;">Name</th>
+                        <th style="width: 12%; padding: 8px; border: 1px solid #cbd5e1; text-align: left;">Class</th>
+                        <th style="width: 14%; padding: 8px; border: 1px solid #cbd5e1; text-align: left;">House</th>
+                        <th style="width: 44%; padding: 8px; border: 1px solid #cbd5e1; text-align: left;">Events</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+
+            filteredParticipants.forEach((item, index) => {
+                const allEvents = [...item.indEvents];
+                if(item.groupEvent) allEvents.push(item.groupEvent + " (G)");
+
+                tableHTML += `
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #cbd5e1;">${index + 1}</td>
+                        <td style="padding: 8px; border: 1px solid #cbd5e1; font-weight: bold;">${item.name}</td>
+                        <td style="padding: 8px; border: 1px solid #cbd5e1;">${item.class}-${item.division}</td>
+                        <td style="padding: 8px; border: 1px solid #cbd5e1;">${item.house}</td>
+                        <td style="padding: 8px; border: 1px solid #cbd5e1; line-height: 1.4;">${allEvents.join(', ') || '-'}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `</tbody>`;
+            tableElement.innerHTML = tableHTML;
+            exportContainer.appendChild(tableElement);
+
+            document.body.appendChild(exportContainer);
+
+            const canvas = await html2canvas(exportContainer, {
+                scale: 2,
+                useCORS: true
+            });
+
+            document.body.removeChild(exportContainer);
+
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            const pdfWidth = pdf.internal.pageSize.getWidth() - 20;
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+            pdf.addImage(imgData, 'PNG', 10, 10, pdfWidth, pdfHeight);
+            pdf.save('Arabic_Kalolsavam_Participants.pdf');
+        }
+    </script>
+</body>
+</html>
+          
