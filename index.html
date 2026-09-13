@@ -270,8 +270,8 @@
         
         <!-- Tab Navigation Bar -->
         <div class="tab-bar">
-            <button id="tabRegBtn" class="tab-btn active" onclick="switchTab('registration')">📝 Registration (എൻട്രി)</button>
-            <button id="tabResBtn" class="tab-btn" onclick="switchTab('results')">🏆 Results & Points (ഫലങ്ങൾ)</button>
+            <button id="tabRegBtn" class="tab-btn active" onclick="switchTab('registration')">📝 Registration</button>
+            <button id="tabResBtn" class="tab-btn" onclick="switchTab('results')">🏆 Results & Points</button>
         </div>
 
         <!-- ================= TAB 1: REGISTRATION ================= -->
@@ -284,13 +284,13 @@
                 <form id="registrationForm" onsubmit="saveParticipant(event)">
                     
                     <div class="form-group">
-                        <label>Student Name / വിദ്യാർത്ഥിയുടെ പേര്</label>
+                        <label>Student Name</label>
                         <input type="text" id="studentName" placeholder="Enter full name" required>
                     </div>
 
                     <div class="form-row">
                         <div>
-                            <label>Class / ക്ലാസ്</label>
+                            <label>Class</label>
                             <select id="classSelect" required>
                                 <option value="">Select</option>
                                 <option value="8">Class 8</option>
@@ -299,7 +299,7 @@
                             </select>
                         </div>
                         <div>
-                            <label>Division / ഡിവിഷൻ</label>
+                            <label>Division</label>
                             <select id="divisionSelect" required>
                                 <option value="">Select</option>
                                 <option value="A">A</option>
@@ -313,7 +313,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>House / ഗ്രൂപ്പ്</label>
+                        <label>House</label>
                         <select id="houseSelect" required>
                             <option value="">Select House</option>
                             <option value="Blue">Blue</option>
@@ -462,11 +462,11 @@
 
             <!-- Result Publishing Entry Card -->
             <div class="card">
-                <h2 class="section-title" style="margin-top:0;">Publish Event Result / ഫലപ്രഖ്യാപനം</h2>
+                <h2 class="section-title" style="margin-top:0;">Publish Event Result</h2>
                 <div class="sub-label">First Place = 5 Pts | Second Place = 3 Pts | Third Place = 1 Pt</div>
 
                 <div class="form-group" style="margin-top: 10px;">
-                    <label>Select Event / മത്സരം തിരഞ്ഞെടുക്കുക</label>
+                    <label>Select Event</label>
                     <select id="resultEventSelect" onchange="loadEventParticipants()">
                         <option value="">-- Choose Event --</option>
                     </select>
@@ -493,13 +493,13 @@
                     </select>
                 </div>
 
-                <button type="button" class="btn-submit" onclick="saveEventResult()">Publish Result & Update Points / ഫലം സേവ് ചെയ്യുക</button>
+                <button type="button" class="btn-submit" onclick="saveEventResult()">Publish Result & Update Points</button>
             </div>
 
             <!-- Declared Results Table Card -->
             <div class="card">
                 <div class="action-bar">
-                    <h2 class="section-title" style="margin-top:0;">Declared Event Results / പ്രഖ്യാപിച്ച ഫലങ്ങൾ</h2>
+                    <h2 class="section-title" style="margin-top:0;">Declared Event Results</h2>
                     <button onclick="exportResultsPDF()" class="btn-export">Export Results PDF</button>
                 </div>
 
@@ -525,7 +525,7 @@
 
     <script>
         const individualEvents = [
-            "ഖുർ-ആൻ പാരായണം",
+            "ഖുർആൻ പാരായണം",
             "ഉപന്യാസം - അറബിക്",
             "കഥാരചന",
             "അടിക്കുറിപ്പ് രചന",
