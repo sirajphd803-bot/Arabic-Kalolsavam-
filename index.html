@@ -506,13 +506,14 @@
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr>
-                                <th style="width: 30%;">Event</th>
-                                <th style="width: 23%;">🥇 1st (5 pts)</th>
-                                <th style="width: 23%;">🥈 2nd (3 pts)</th>
-                                <th style="width: 24%;">🥉 3rd (1 pt)</th>
-                            </tr>
-                        </thead>
+    <tr>
+        <th style="width: 25%;">Event</th>
+        <th style="width: 20%;">🥇 1st (5 pts)</th>
+        <th style="width: 20%;">🥈 2nd (3 pts)</th>
+        <th style="width: 20%;">🥉 3rd (1 pt)</th>
+        <th style="width: 15%; text-align:center;">Action</th>
+    </tr>
+</thead>
                         <tbody id="resultsTableBody">
                         </tbody>
                     </table>
@@ -787,48 +788,49 @@ function saveEventResult() {
             calculateAndRenderResults();
             alert("ഫലം വിജയകരമായി സേവ് ചെയ്തു!");
         }
-
         function calculateAndRenderResults() {
-            const scores = { Blue: 0, Green: 0, Red: 0, Yellow: 0 };
-            const tbody = document.getElementById('resultsTableBody');
-            tbody.innerHTML = "";
+    const scores = { Blue: 0, Green: 0, Red: 0, Yellow: 0 };
+    const tbody = document.getElementById('resultsTableBody');
+    tbody.innerHTML = "";
 
-            let hasResults = false;
+    let hasResults = false;
 
-            Object.keys(eventResults).forEach(event => {
-                const res = eventResults[event];
-                if(!res) return;
+    Object.keys(eventResults).forEach(eventName => {
+        const res = eventResults[eventName];
+        if(!res) return;
 
-                hasResults = true;
+        hasResults = true;
 
-                const firstStudent = participants.find(p => p.id == res.first);
-                const secondStudent = participants.find(p => p.id == res.second);
-                const thirdStudent = participants.find(p => p.id == res.third);
+        const firstStudent = participants.find(p => p.id == res.first);
+        const secondStudent = participants.find(p => p.id == res.second);
+        const thirdStudent = participants.find(p => p.id == res.third);
 
-                if(firstStudent && scores[firstStudent.house] !== undefined) scores[firstStudent.house] += 5;
-                if(secondStudent && scores[secondStudent.house] !== undefined) scores[secondStudent.house] += 3;
-                if(thirdStudent && scores[thirdStudent.house] !== undefined) scores[thirdStudent.house] += 1;
+        if(firstStudent && scores[firstStudent.house] !== undefined) scores[firstStudent.house] += 5;
+        if(secondStudent && scores[secondStudent.house] !== undefined) scores[secondStudent.house] += 3;
+        if(thirdStudent && scores[thirdStudent.house] !== undefined) scores[thirdStudent.house] += 1;
 
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><b>${event}</b></td>
-                    <td>${firstStudent ? `${firstStudent.name} <br><small style="color:#2563eb;">(${firstStudent.house})</small>` : '-'}</td>
-                    <td>${secondStudent ? `${secondStudent.name} <br><small style="color:#2563eb;">(${secondStudent.house})</small>` : '-'}</td>
-                    <td>${thirdStudent ? `${thirdStudent.name} <br><small style="color:#2563eb;">(${thirdStudent.house})</small>` : '-'}</td>
-                `;
-                tbody.appendChild(row);
-            });
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><b>${eventName}</b></td>
+            <td>${firstStudent ? `${firstStudent.name} <br><small style="color:#2563eb;">(${firstStudent.house})</small>` : '-'}</td>
+            <td>${secondStudent ? `${secondStudent.name} <br><small style="color:#2563eb;">(${secondStudent.house})</small>` : '-'}</td>
+            <td>${thirdStudent ? `${thirdStudent.name} <br><small style="color:#2563eb;">(${thirdStudent.house})</small>` : '-'}</td>
+            <td style="text-align:center;">
+                <button class="btn-delete" onclick="deleteResult('${eventName}')">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
 
-            if(!hasResults) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8; padding: 12px;">No Results Declared Yet</td></tr>`;
-            }
+    if(!hasResults) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding: 12px;">No Results Declared Yet</td></tr>`;
+    }
 
-            document.getElementById('scoreBlue').innerText = scores.Blue;
-            document.getElementById('scoreGreen').innerText = scores.Green;
-            document.getElementById('scoreRed').innerText = scores.Red;
-            document.getElementById('scoreYellow').innerText = scores.Yellow;
-        }
-
+    document.getElementById('scoreBlue').innerText = scores.Blue;
+    document.getElementById('scoreGreen').innerText = scores.Green;
+    document.getElementById('scoreRed').innerText = scores.Red;
+    document.getElementById('scoreYellow').innerText = scores.Yellow;
+}
         // Export Participants PDF
         async function exportToPDF() {
             const { jsPDF } = window.jspdf;
@@ -1014,6 +1016,17 @@ tableHTML += `</tbody>`;
             pdf.addImage(imgData, 'PNG', 10, 10, pdfWidth, pdfHeight);
             pdf.save('Arabic_Kalolsavam_Event_Results.pdf');
         }
+        function deleteResult(eventName) {
+    const password = prompt("റിസൾട്ട് ഡിലീറ്റ് ചെയ്യാൻ പാസ്‌വേഡ് എന്റർ ചെയ്യുക:");
+    if (password === ADMIN_PASSWORD) {
+        delete eventResults[eventName];
+        localStorage.setItem('arabicKalolsavamResults', JSON.stringify(eventResults));
+        calculateAndRenderResults();
+        alert("റിസൾട്ട് ഡിലീറ്റ് ചെയ്തു.");
+    } else if(password !== null) {
+        alert("തെറ്റായ പാസ്‌വേഡ്!");
+    }
+}
     </script>
 </body>
 </html>
